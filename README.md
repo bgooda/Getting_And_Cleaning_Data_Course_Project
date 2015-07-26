@@ -1,9 +1,16 @@
 #Getting and Cleaning Data Course Project
 
 ##Introduction
-This readme file, explains how to run the script "run_analysis.R".
+This readme file, explains how to read the output data, run the script "run_analysis.R" to reproduce the data.
 And how the script works.
 
+##Reading output data
+If you have downloaded the output tidy data file ("tidyData.txt") of the script, and you want to read it directly, use the following commands.
+```{r}
+library(dplyr)
+tidyData <- read.table("tidtData.txt") %>% tbl_df
+names(tidyData) <- c("Activity","Subject","Signal_Type","Estimate_Type","Direction","Average_Signal")
+```
 ##Running the script
 1. Download the original data from: "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 2. Extract the folder: "UCI HAR Dataset", and make sure your working directory is inside this folder.
