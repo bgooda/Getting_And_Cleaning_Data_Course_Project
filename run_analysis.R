@@ -1,7 +1,9 @@
 #Loading "dplyr" & "tidyr" packages.
 #Use install.packages("dplyr"); install.packages("tidyr"); if not already installed.
 library(dplyr); library(tidyr)
-# The following script assumes the script file is located inside the project data directory.
+# The following script assumes your working directory is located inside the project data directory.
+# If you need to download the data directory use url: 
+# "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 # The path syntax used is for windows, if you wish to run the script on a linux/mac machine,
 # Please modify the path and replace "\\" with "/".
 
@@ -84,15 +86,23 @@ tidyData <- mergedData %>% gather("Feature", "Signal",3:68)
 # I considered the "Feature" column to contain multiple variables, since it contains:
 # "Feature Type", "Estimate Type" and "Direction" in some cases.
 # I used tidyr::spread() to spread the "Feature" column  into 3 variables.
-tidyData <- separate(tidyData, Feature, c("Singal Type","Estimate Type","Direction"))
+tidyData <- separate(tidyData, Feature, c("Singal_Type","Estimate_Type","Direction"))
 
 # The above operation resulted in some empty strings in the "Direction" variable,
 # Since not all features are specific to a direction.
 # I decided to replace the empty strings with NAs for easier future data manipulation.
 tidyData$Direction[tidyData$Direction == ""] <- NA
 
+# The final step is taking the average signal for each variable.
+# First we group the data by Activity, Subject, 
+# and each variable (Signal_Type, Estimate_Type and Direction)
+tidyDataGrouped <- group_by(tidyData, Activity, Subject, Singal_Type, Estimate_Type, Direction)
+
+# Then we apply the summarize function to the grouped dataset,
+# by calling the mean on the "signal" variable.
+tidyDataFinal <- summarize(tidyDataGrouped, Average_Signal = mean(Signal))
+
 # Finally this is how I write the final tidy dataset, into a file named: "tidyData.txt"
-write.table(tidyData, file = "tidyData.txt", row.names = FALSE, col.names = FALSE)
+write.table(tidyDataFinal, file = "tidyData.txt", row.names = FALSE, col.names = FALSE)
 
 # Running the above script should produce the same dataset attached to the project submission.
-
