@@ -1,4 +1,4 @@
- ## Project Description
+## Project Description
 This is a description of a solution to the course project of the course "Getting And Cleaning Data" 
 offered by Johns Hopkins Bloomberg School of public health.
 
