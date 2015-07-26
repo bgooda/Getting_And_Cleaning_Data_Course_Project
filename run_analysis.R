@@ -86,7 +86,7 @@ tidyData <- mergedData %>% gather("Feature", "Signal",3:68)
 # I considered the "Feature" column to contain multiple variables, since it contains:
 # "Feature Type", "Estimate Type" and "Direction" in some cases.
 # I used tidyr::spread() to spread the "Feature" column  into 3 variables.
-tidyData <- separate(tidyData, Feature, c("Singal_Type","Estimate_Type","Direction"))
+tidyData <- separate(tidyData, Feature, c("Signal_Type","Estimate_Type","Direction"))
 
 # The above operation resulted in some empty strings in the "Direction" variable,
 # Since not all features are specific to a direction.
@@ -96,7 +96,7 @@ tidyData$Direction[tidyData$Direction == ""] <- NA
 # The final step is taking the average signal for each variable.
 # First we group the data by Activity, Subject, 
 # and each variable (Signal_Type, Estimate_Type and Direction)
-tidyDataGrouped <- group_by(tidyData, Activity, Subject, Singal_Type, Estimate_Type, Direction)
+tidyDataGrouped <- group_by(tidyData, Activity, Subject, Signal_Type, Estimate_Type, Direction)
 
 # Then we apply the summarize function to the grouped dataset,
 # by calling the mean on the "signal" variable.
